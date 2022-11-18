@@ -17,8 +17,8 @@ class Stm32TimCalulator:
     def __init__(self):
         pass
 
-    def calculatePeriod(self, timxClk, period):
-        print("Debug: Function {}".format(self.calculatePeriod.__name__))
+    def calculatePulse(self, timxClk, desiredChannelPeriod):
+        print("Debug: Function {}".format(self.calculatePulse.__name__))
         pass
 
 
@@ -26,7 +26,7 @@ def help():
     print("Debug: Function {}".format(help.__name__))
     print("\n\n\t\t\tAvailable commands:\n")
     print("\t" + "-t            TIMx CLK \n")
-    print("\t" + "-f            Desired frequency\n")
+    print("\t" + "-f            Desired channel frequency\n")
 
 def runApp():
     argv = sys.argv[1:]
@@ -44,15 +44,17 @@ def runApp():
             print("Debug: Timer frequency option")
             timFreq = arg
         elif option in ['-f']:
-            print("Debug: Desired frequency option")
-            period = 1 / int(arg);
+            print("Debug: Desired channel frequency")
+            desiredChannelPeriod = 1 / int(arg);
         elif option in ['h','--help']:
             print("Debug: Help option")
         else:
             print("Debug: else part")
             help()
 
-    print("Debug: Results: timFreq = {}, period = {}".format(timFreq, period))
+    calculator =  Stm32TimCalulator()
+    calculator.calculatePulse(timFreq, desiredChannelPeriod)
+    print("Debug: Results: Timer frequency = {}, Desired channel period = {}".format(timFreq, desiredChannelPeriod))
 
 runApp()
 # stm32Calculator =  Stm32TimCalulator()
