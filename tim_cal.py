@@ -1,13 +1,12 @@
+#########################################################
+#   Author: Aaron Escoboza
+#   Description: Calculate a the pulse value based
+#                a given TIMx frequency and desired
+#                channel frequency.
+#########################################################
 
 import sys
 import getopt
-
-# timx_clk = 84000000; # Hz
-# prescaler = 0;
-# cnt_clk = timx_clk/(prescaler + 1) #Timer count clock
-# time_base = 100 / 1000
-# max_16bit_dec_value = 65535;
-# period = time_base / (1 / cnt_clk);
 
 class Stm32TimCalulator:
     defaultTimxClk = 16000000
@@ -19,7 +18,16 @@ class Stm32TimCalulator:
 
     def calculatePulse(self, timxClk, desiredChannelPeriod):
         print("Debug: Function {}".format(self.calculatePulse.__name__))
-        pass
+        # Initial timer register values
+        pulse = 0
+        prescaler = 0
+        time_base = (desiredChannelPeriod / 2) * 1000
+        while (pulse > self.maxCounterDecVal or not(str(pulse).endswith('.0')) or (pulse == 0)):
+            prescaler = prescaler + 1
+            cnt_clk = float(timxClk) / (prescaler + 1) #Timer count clock
+            pulse = time_base / (1 / cnt_clk);
+            print("Debug: prescaler = {}, cnt_clk = {}, period = {}" .format(prescaler, cnt_clk, pulse))
+        print("Results: Prescaler = {}, Pulse = {}".format(prescaler, pulse))
 
 
 def help():
@@ -45,7 +53,7 @@ def runApp():
             timFreq = arg
         elif option in ['-f']:
             print("Debug: Desired channel frequency")
-            desiredChannelPeriod = 1 / int(arg);
+            desiredChannelPeriod = 1 / float(arg);
         elif option in ['h','--help']:
             print("Debug: Help option")
         else:
@@ -57,24 +65,3 @@ def runApp():
     print("Debug: Results: Timer frequency = {}, Desired channel period = {}".format(timFreq, desiredChannelPeriod))
 
 runApp()
-# stm32Calculator =  Stm32TimCalulator()
-
-# period = stm32Calculator.calculatePeriod(16000000, 0.1)
-# print("Debug: Period calculater {}".format(period))
-
-# timx_clk = 84000000; # Hz
-# prescaler = 0;
-# cnt_clk = timx_clk/(prescaler + 1) #Timer count clock
-# time_base = 100 / 1000
-# max_16bit_dec_value = 65535;
-# period = time_base / (1 / cnt_clk);
-
-# print("Debug: prescaler = {}, cnt_clk = {}, period = {}" .format(prescaler, cnt_clk, period))
-# while (period > max_16bit_dec_value or not(str(period).endswith('.0'))):
-#     prescaler = prescaler + 1
-#     cnt_clk = timx_clk / (prescaler + 1) #Timer count clock
-#     period = time_base / (1 / cnt_clk);
-#     print("Debug: prescaler = {}, cnt_clk = {}, period = {}" .format(prescaler, cnt_clk, period))
-
-# # print results
-# print("Results: prescaler = {}, cnt_clk = {}, period = {}" .format(prescaler, cnt_clk, period))
