@@ -78,8 +78,8 @@ def runApp():
             help()
 
     calculator =  Stm32TimCalulator()
-    calculator.calculatePeriod(timFreq, 0, updateEventPeriod)
-    #calculator.calculatePulse(timFreq, desiredChannelPeriod)
+    # calculator.calculatePeriod(timFreq, 0, updateEventPeriod)
+    calculator.calculatePulse(timFreq, desiredChannelPeriod)
     # print("Debug: Results: Timer frequency = {}, Desired channel period = {}".format(timFreq, desiredChannelPeriod))
 
 runApp()
