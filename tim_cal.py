@@ -44,16 +44,14 @@ class Stm32TimCalulator:
         print("Results: Prescaler = {}, Period = {}".format(prescaler, periodAutoReload))
 
 def help():
-    print("Debug: Function {}".format(help.__name__))
-    print("\n\n\t\t\tAvailable commands:\n")
-    print("\t" + "-t            TIMx CLK \n")
-    print("\t" + "-f            OC toggle mode: Desired channel frequency. Return pulse value\n")
-    print("\t" + "-u            Base unit: Desired update event. Return period value")
+    # print("Debug: Function {}".format(help.__name__))
+    print("\nAvailable commands:\n")
+    print("\t\t" + "-t            TIMx CLK")
+    print("\t\t" + "-f            OC toggle mode: Desired channel frequency")
+    print("\t\t" + "-u            Base unit: Desired update event")
 
 def runApp():
     argv = sys.argv[1:]
-    print("Debug: Function {}".format(runApp.__name__))
-
     try:
         options , args = getopt.getopt(argv, "t:f:h:l:u:")
     except:
@@ -61,6 +59,11 @@ def runApp():
 
     print(options)
     print(args)
+    #Checking for 0 lenght
+    if (not(len(options)) or not(len(args))):
+        help()
+        return
+
     for option, arg in options:
         if option in ['-t']:
             print("Debug: Option: Timer frequency option")
