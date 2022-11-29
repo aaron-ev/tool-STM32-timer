@@ -51,7 +51,10 @@ def help():
     print("\t\t" + "-u            Base unit: Desired update event")
 
 def runApp():
+    desiredChannelPeriod = 0
+    updateEventPeriod = 0
     argv = sys.argv[1:]
+
     try:
         options , args = getopt.getopt(argv, "t:f:h:l:u:")
     except:
@@ -60,7 +63,7 @@ def runApp():
     print(options)
     print(args)
     #Checking for 0 lenght
-    if (not(len(options)) or not(len(args))):
+    if (not(len(options))):
         help()
         return
 
@@ -81,8 +84,11 @@ def runApp():
             help()
 
     calculator =  Stm32TimCalulator()
-    # calculator.calculatePeriod(timFreq, 0, updateEventPeriod)
-    calculator.calculatePulse(timFreq, desiredChannelPeriod)
-    # print("Debug: Results: Timer frequency = {}, Desired channel period = {}".format(timFreq, desiredChannelPeriod))
+    timFreq = int(timFreq)
+    if (timFreq > 0 and desiredChannelPeriod > 0):
+        calculator.calculatePulse(timFreq, desiredChannelPeriod)
+
+    if (timFreq > 0 and updateEventPeriod > 0):
+        calculator.calculatePeriod(timFreq, updateEventPeriod)
 
 runApp()
